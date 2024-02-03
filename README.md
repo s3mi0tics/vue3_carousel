@@ -4,5 +4,5 @@ In this tutorial, I'm going to to create a Carousel image slider with Vue.js fro
 I'll also add some controls on the carousel so that the user can also switch to the previous or next image by manually hitting the controls.
 Besides that, I'll also add indicators that display how many images are on the page and indicate which image is active. Users can click on that to switch the current image.
 
-youtube tutorial [https://www.youtube.com/watch?v=qo4XzJMEMN4](HERE) by TutsPrime
+youtube tutorial [HERE](https://www.youtube.com/watch?v=qo4XzJMEMN4) by TutsPrime
 
