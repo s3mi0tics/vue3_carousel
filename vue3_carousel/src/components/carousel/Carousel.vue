@@ -1,39 +1,71 @@
 <template>
   <div class="carousel">
     <div class="carousel-inner">
-      <carousel-item
+      <carouselItem
         v-for="(slide, index) in slides"
         :slide="slide"
         :key="`item-${index}`"
         :current-slide="currentSlide"
         :index="index"
-      ></carousel-item>
+        :direction="direction"
+        @mouseenter="stopSlideTimer"
+        @mouseout="startSlideTimer"
+      ></carouselItem>
+      <CarouselControls 
+        @prev="prev" 
+        @next="next"
+        @mouseenter="stopSlideTimer"
+        @mouseout="startSlideTimer"
+      ></CarouselControls>
     </div>
   </div>
 </template>
 
 <script>
 import CarouselItem from "./CarouselItem.vue";
+import CarouselControls from "./CarouselControls.vue";
+import { toHandlers } from "vue";
 export default {
     props: ['slides'],
-  components: { CarouselItem },
+  components: { CarouselItem, CarouselControls },
   data: () => ({
     currentSlide: 0,
-    slideInterval: null
+    slideInterval: null,
+    direction: "direction"
   }),
   methods: {
     setCurrentSlide (index) {
         this.currentSlide = index;
+    },
+    prev () {
+      const index = this.currentSlide > 0 ? this.currentSlide - 1 : this.slides.length -1;
+        this.setCurrentSlide(index);
+        this.direction = "left"
+    },
+    _next () {
+      const index = 
+      this.currentSlide < this.slides.length -1 ? this.currentSlide + 1 : 0;
+      this.setCurrentSlide(index);
+      this.direction = "right"
+    },
+    next () {
+      this._next()
+    },
+    startSlideTimer () {
+      this.stopSlideTimer();
+      this.slideInterval = setInterval(() => {
+        this._next();
+      }, 3500)
+    },
+    stopSlideTimer () {
+      clearInterval(this.slideInterval);
     }
   },
   mounted () {
-    this.slideInterval = setInterval(() => {
-        const index = this.currentSlide < this.slides.length -1 ? this.currentSlide + 1 : 0;
-        this.setCurrentSlide(index);
-    }, 3000);
+    this.startSlideTimer()
   },
   beforeUnmount () {
-    clearInterval(this.slideInterval);
+    this.stopSlideTimer()
   }
 };
 </script>
